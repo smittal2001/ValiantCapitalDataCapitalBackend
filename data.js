@@ -23,10 +23,10 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json(`Error: ${err} Lender Data ${newLender}`));
 });
 
-router.route('/get/:loanTypes/:lender/:region').get((req, res) => {
+router.route('/get/:loanTypes/:region').get((req, res) => {
   const loanTypes = req.params.loanTypes.substring(0,req.params.loanTypes.length-1).split("-");
 
-  LenderInfo.find({ loanType: { $all: loanTypes }, lender: req.params.lender, region: req.params.region})
+  LenderInfo.find({ loanType: { $all: loanTypes }, region: req.params.region})
     .then(items => {
       res.json(items)
       console.log(req.params.lender + " " + req.params.region)
