@@ -24,7 +24,7 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/get/:loanTypes/:region').get((req, res) => {
-  const loanTypes = req.params.loanTypes.substring(0,req.params.loanTypes.length).split("-");
+  const loanTypes = req.params.loanTypes.substring(0,req.params.loanTypes.length-1).split("-");
 
   LenderInfo.find({ loanType: { $all: loanTypes }, region: req.params.region})
     .then(items => {
