@@ -44,7 +44,7 @@ router.route('/get/:region').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/get/:loanTypes').get((req, res) => {
+router.route('/loanTypes/:loanTypes').get((req, res) => {
   const loanTypes = req.params.loanTypes.substring(0,req.params.loanTypes.length-1).split("-");
 
   LenderInfo.find({ loanType: { $all: loanTypes }})
