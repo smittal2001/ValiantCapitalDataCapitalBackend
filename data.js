@@ -66,5 +66,33 @@ router.route('/getRegions').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/update/:id').post((req, res) => {
+  var updateFields = [];
+  updateFields.push(["lender",req.body.lender]);
+  updateFields.push(["region", req.body.region]);
+  updateFields.push(["contact", req.body.contact]);
+  updateFields.push(["email", req.body.email]);
+  updateFields.push(["phone", req.body.phone]);
+  updateFields.push(["notes", req.body.notes]);
+  updateFields.push(["loanType",req.body.loanType]);
+  updateFields.push(["maxLTV",req.body.maxLTV]);
+  updateFields.push(["interestRange", req.body.interestRange]);
+  updateFields.push(["minCreditScore", req.body.minCreditScore]);
+  updateFields.push(["maxAmortization",req.body.maxAmortization]);
+  updateFields.push(["maxLoanAmount", req.body.maxLoanAmount]);
+  console.log(updateFields);
+  updateFields.forEach(field => {
+    if(field[1] != "") {
+      var query = {};
+      query[field[0]] = field[1];
+      LenderInfo.updateOne({_id: ObjectId(req.params.id)}, {$set:query})
+      .then(() => res.json('Lender updated!'))
+      .catch(err => res.status(400).json(`Error: ${err}`));
+    }
+  }
+  );
+});
+
+
 
 module.exports = router;
