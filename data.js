@@ -78,21 +78,29 @@ router.route('/update/:id').post((req, res) => {
   updateFields.push(["maxLTV",req.body.maxLTV]);
   updateFields.push(["interestRange", req.body.interestRange]);
   updateFields.push(["minCreditScore", req.body.minCreditScore]);
-  updateFields.push(["maxAmortization",req.body.maxAmortization]);
-  updateFields.push(["maxLoanAmount", req.body.maxLoanAmount]);
+  updateFields.push(["maxAmortization",req.body.maxAmort]);
+  updateFields.push(["maxLoanAmount", req.body.maxLoanAmt]);
   console.log(updateFields);
-  updateFields.forEach(field => {
-    if(field[1] != "") {
-      var query = {};
-      query[field[0]] = field[1];
-      LenderInfo.updateOne({_id: ObjectId(req.params.id)}, {$set:query})
-      .then(() => res.json('Lender updated!'))
-      .catch(err => res.status(400).json(`Error: ${err}`));
-    }
-  }
-  );
-});
 
+
+  LenderInfo.findById(req.params.id)
+  .then(document => {
+    updateFields.forEach(field => {
+    
+      console.log(field);
+      document[field[0]] = field[1];
+    }
+    );
+    document.save()
+      .then(() => res.json('Lender Data updated!'))
+      .catch(err => res.status(400).json('Error: ' + err));
+  })  
+});
+router.route('/delete/:id').delete((req, res) => {
+  LenderInfo.findByIdAndDelete(req.params.id)
+    .then(() => res.json('Lender Data deleted.'))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
 
 module.exports = router;
