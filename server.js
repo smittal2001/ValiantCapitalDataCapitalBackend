@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'), Admin = mongoose.mongo.Admin;;
 
 require('dotenv').config();
 
@@ -16,7 +16,9 @@ mongoose.connect(uri, { useNewUrlParser: true }
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
+  console.log(mongoose.modelNames());
 })
+
 
 const lenderData = require('./data');
 app.use('/lenderData', lenderData);

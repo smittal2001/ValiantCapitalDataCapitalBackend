@@ -25,6 +25,7 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/getAll').get((req, res) => {
+  console.log("Recieved getAll data call from " + req.headers.origin)
   LenderInfo.find()
     .then(items => {
       res.json(items)
