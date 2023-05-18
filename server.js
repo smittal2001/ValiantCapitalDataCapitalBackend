@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose'), Admin = mongoose.mongo.Admin;;
-
+const mongoose = require('mongoose')
 require('dotenv').config();
 
 const app = express();
@@ -19,12 +18,16 @@ connection.once('open', () => {
   console.log(mongoose.modelNames());
 })
 
+const { authenticateToken }= require('./authenticateToken.function')
 
 const lenderData = require('./data');
-app.use('/lenderData', lenderData);
+app.use('/lenderData', authenticateToken, lenderData);
 
 const loanType = require('./loanType');
-app.use('/loanTypes', loanType);
+app.use('/loanTypes', authenticateToken, loanType);
+
+const login = require('./login');
+app.use('/login', login);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
